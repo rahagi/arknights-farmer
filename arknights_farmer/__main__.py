@@ -6,11 +6,13 @@ from gacha_elper.adb import Adb
 
 ap = argparse.ArgumentParser(prog='arknights-farmer')
 required_args = ap.add_argument_group('required args')
-required_args.add_argument('-p', '--penguin', action='store_true', help='use farm route data from penguin-stats')
-required_args.add_argument('-s', '--stage', help='add stage(s) to farm task manually (e.g. 1-7:100 4-4:25)')
-
 optional_args = ap.add_argument_group('optional args')
-optional_args.add_argument('-r', '--refill', default=0, type=int, help='how many times you want to refill. default is 0')
+required_args.add_argument('-p', '--penguin', action='store_true',
+                           help='use farm route data from penguin-stats.io')
+required_args.add_argument('-s', '--stage',
+                           help='manually add stage(s) to farm task (e.g. 1-7:100 4-4:25 (separated by whitespace))')
+optional_args.add_argument('-r', '--refill', default=0, type=int,
+                           help='how many times you want to refill. default is 0')
 
 if __name__ == '__main__':
     args = ap.parse_args()
