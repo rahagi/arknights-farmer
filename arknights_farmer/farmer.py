@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .stage import Stage
 from .utils.tools import Elp
+from .utils.logger import Logger
 from gacha_elper.elper import Coordinate as Coord
 
 class CombatHandler:
@@ -14,6 +15,7 @@ class CombatHandler:
         'chips': Coord(380, 665),
         'next_chp': Coord(1185, 665),
         'prev_chp': Coord(980, 665),
+        'auto_toggle': Coord(1150, 600),
         'start1': Coord(1142, 665),
         'start2': Coord(1105, 505),
         'center': Coord(720, 360)
@@ -21,7 +23,7 @@ class CombatHandler:
     
     def __init__(self, task, refill=0):
         self.task = task
-        self.refill = 0
+        self.refill = refill
 
     def start(self):
         if not Elp.find('combat'):
@@ -30,52 +32,71 @@ class CombatHandler:
         else:
             Elp.tap(self.BUTTONS['combat'])
             Elp.wait_until_find('home')
-        for t in self.task:
-            if t.classifier == 'supplies':
-                pass
-            elif t.classifier == 'chips':
-                pass
-            elif t.classifier == 'event':
-                pass
-            else:
-                Elp.tap(self.BUTTONS['combat'], delay=4)
-                current_chapter = Elp.find_current_chapter()
-                print(current_chapter)
-                target_chapter = int(t.chapter)
-                for _ in range(abs(target_chapter - current_chapter)):
-                    if target_chapter > current_chapter:
-                        Elp.tap(self.BUTTONS['next_chp'], delay=3)
-                    else:
-                        Elp.tap(self.BUTTONS['prev_chp'], delay=3)
-                stage_coord = Elp.find_stage(t)
-                Elp.tap(stage_coord)
-            if Elp.find('auto_off'):
-                Elp.tap(self.BUTTONS['auto_toggle'])
-                if Elp.find('auto_off', update_screen=False):
-                    break
-            while self.task[t] > 0:
-                Elp.tap(self.BUTTONS['start1'])
-                if Elp.find('sanity_out'):
-                    if self.refill <= 0:
+        try:
+            for t in self.task:
+                Logger.log(f'Doing {t.name} run for {self.task[t]} time(s)')
+                if t.classifier == 'supplies':
+                    pass
+                elif t.classifier == 'chips':
+                    pass
+                elif t.classifier == 'event':
+                    pass
+                else:
+                    Elp.tap(self.BUTTONS['combat'], delay=2)
+                    current_chapter = Elp.find_current_chapter()
+                    target_chapter = int(t.chapter)
+                    for _ in range(abs(target_chapter - current_chapter)):
+                        if target_chapter > current_chapter:
+                            Elp.tap(self.BUTTONS['next_chp'], delay=3)
+                        else:
+                            Elp.tap(self.BUTTONS['prev_chp'], delay=3)
+                    stage_coord = Elp.find_stage(t)
+                    Elp.tap(stage_coord)
+                if Elp.find('auto_off'):
+                    Elp.tap(self.BUTTONS['auto_toggle'])
+                    if Elp.find('auto_off'):
+                        Logger.log("You don't have auto enabled for this stage! Skipping...", mode='warn')
                         break
-                    Elp.tap(self.BUTTONS['refill'])
-                    Elp.tap(self.BUTTONS['start1'], delay=3)
-                Elp.wait_until_find('mission_start')
-                Elp.tap(self.BUTTONS['start2'])
-                Elp.wait_until_find('trust_meter')
-                Elp.tap(self.BUTTONS['center'])
-                Elp.wait_until_find('home')
-                self.task[t] -= 1
-            Elp.tap(self.BUTTONS['home1'])
-            Elp.tap(self.BUTTONS['home2'])
+                while self.task[t] > 0:
+                    Elp.tap(self.BUTTONS['start1'], delay=2)
+                    if Elp.find('sanity_out'):
+                        Logger.log('You ran out of sanity')
+                        if self.refill <= 0:
+                            Logger.log('Ending session...')
+                            Logger.log('Saving task...')
+                            Elp.save_task(self.task)
+                            Elp.exit(0)
+                        Logger.log('Refilling sanity...')
+                        Elp.tap(self.BUTTONS['refill'])
+                        Elp.tap(self.BUTTONS['start1'])
+                    Elp.wait_until_find('mission_start')
+                    Elp.tap(self.BUTTONS['start2'])
+                    Elp.wait_until_find('trust_meter')
+                    Elp.tap(self.BUTTONS['center'])
+                    Elp.wait_until_find('home')
+                    self.task[t] -= 1
+                Elp.tap(self.BUTTONS['home1'])
+                Elp.tap(self.BUTTONS['combat2'])
+            Logger.log('Completed all task')
+            Logger.log('Exiting...')
+            
+        except KeyboardInterrupt:
+            Logger.log('Saving task...')
+            Elp.save_task(self.task)
+            Logger.log('Exiting...')
+            Elp.exit(0)
 
 def parse_task(task):
-    if isinstance(task, dict):
+    if isinstance(task[0], dict):
         return {Stage(x['stage']): int(x['count']) for x in task}
     else:
         return {Stage(x.split(':')[0]): int(x.split(':')[1]) for x in task.split(' ')}
 
-def init(task, refill):
-    task = parse_task(task)
+def init(refill, task=None):
+    task = parse_task(task) if task else Elp.get_recent_task()
+    Elp.delete_task()
+    if not task:
+        Logger.log('Task not found', mode='error')        
+        Elp.exit(1)
     c = CombatHandler(task, refill)
     c.start()
