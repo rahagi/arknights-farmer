@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from datetime import datetime
 
@@ -16,10 +17,10 @@ class Logger:
     }
 
     @classmethod
-    def log(self, msg, mode='info'):
-        print(f'{self.MODE[mode]}[{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {msg}{self.MODE["end"]}')
+    def log(self, *msg, mode='info'):
+        print(f'{self.MODE[mode]}[{mode[0].upper()}][{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {' '.join(msg)}{self.MODE["end"]}')
 
     @classmethod
-    def log_debug(self, msg):
+    def log_debug(self, *msg):
         if self.DEBUG:
-            print(f'{self.MODE["warn"]}[{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {msg}{self.MODE["end"]}')
+            print(f'{self.MODE["warn"]}[D][{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {' '.join(msg)}{self.MODE["end"]}')
