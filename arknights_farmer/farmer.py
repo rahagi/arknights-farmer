@@ -59,7 +59,7 @@ class CombatHandler:
                         break
                 while self.task[t] > 0:
                     Elp.tap(self.BUTTONS['start1'], delay=2)
-                    if Elp.find('sanity_out'):
+                    if Elp.find('sanity_out', sim_to=0.75):
                         Logger.log('You ran out of sanity')
                         if self.refill <= 0:
                             Logger.log('Ending session...')
@@ -77,13 +77,19 @@ class CombatHandler:
                     self.task[t] -= 1
                 Elp.tap(self.BUTTONS['home1'])
                 Elp.tap(self.BUTTONS['combat2'])
+                del(self.task[t])
             Logger.log('Completed all task')
             Logger.log('Exiting...')
-            
         except KeyboardInterrupt:
             Logger.log('Saving task...')
             Elp.save_task(self.task)
             Logger.log('Exiting...')
+            Elp.exit(0)
+        except:
+            Logger.log('Something went horribly wrong', mode='error')
+            Logger.log('Saving task...')
+            Elp.save_task(self.task)
+            Logger.log('Exitting...')
             Elp.exit(0)
 
 def parse_task(task):

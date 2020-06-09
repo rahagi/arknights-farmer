@@ -2,9 +2,8 @@
 import os
 import sys
 import json
-from random import randint
 from ..stage import Stage
-from gacha_elper.elper import Elper, cv2, np
+from gacha_elper.elper import Elper, cv2, np, randint
 from gacha_elper.elper import Coordinate as Coord
 from gacha_elper.adb import Adb
 
@@ -32,7 +31,7 @@ class Elp(Elper):
     @classmethod
     def __find_stage_boxes(self, stage):
         self.__update_screen()
-        target = Elp.find(f'stages/{stage.chapter}/{stage.name}', update_screen=False)
+        target = Elp.find(f'stages/{stage.chapter}/{stage.name}', sim_from=0.98, sim_to=0.94, update_screen=False)
         if target:
             return {stage.name: target}
         subdir = f'stages/{stage.chapter}/s' if stage.issstages else f'stages/{stage.chapter}'
