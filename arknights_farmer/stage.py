@@ -29,7 +29,7 @@ class Stage:
 
     def identify(self):
         s_prefix = self.name.split('-')[0]
-        s_postfix = self.name.split('-')[-1:]
+        s_postfix = self.name.split('-')[-1:][0]
         if s_prefix.isnumeric():
             self.classifier = 'main'
             self.issstages = not s_prefix.isnumeric()

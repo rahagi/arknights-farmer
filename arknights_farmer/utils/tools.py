@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
-from random import randint
+import os
+import sys
+import json
 from ..stage import Stage
-from pytesseract import image_to_string
-from gacha_elper.elper import Elper, cv2, np
+from gacha_elper.elper import Elper, cv2, np, randint
 from gacha_elper.elper import Coordinate as Coord
 from gacha_elper.adb import Adb
 
 class Elp(Elper):
+
+    TASK_DIR = (f'{os.environ["LOCALAPPDATA"]}/arknights-farmer' 
+                if os.name == 'win' 
+                else f'{os.environ["HOME"]}/.cache/arknights-farmer')
 
     @classmethod
     def __update_screen(self, bgr=0):
@@ -24,63 +29,74 @@ class Elp(Elper):
         self.CURRENT_SCREEN = np.array([[]])
 
     @classmethod
-    def __find_stage_boxes(self):
-        self.__update_screen(1)
-        crop_screen = self.CURRENT_SCREEN[150:600]
-        crop_screen = cv2.cvtColor(crop_screen, cv2.COLOR_BGR2HSV)
-        crop_screen = cv2.GaussianBlur(crop_screen, (7, 7), 0)
-
-        # Color segmentation to find stage boxes
-        lower_red = np.array([5, 215, 75])
-        upper_red = np.array([15, 255, 107])
-        lower_normal = np.array([0, 0, 0])
-        upper_normal = np.array([0, 255, 255])
-        mask1 = cv2.inRange(crop_screen, lower_normal, upper_normal)
-        mask2 = cv2.inRange(crop_screen, lower_red, upper_red)
-        mask = cv2.bitwise_or(mask1, mask2)
-        thres = cv2.threshold(mask, 0, 255, cv2.THRESH_OTSU)[1]
-        cnts = cv2.findContours(thres, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[0]
-        cnts = list(filter(lambda x: cv2.contourArea(x) > 1000 and cv2.contourArea(x) < 5000, cnts))
-        regions = [cv2.boundingRect(x) for x in cnts]
-        return {self.ocr(Coord(x[0]+25, x[1]+2), x[2]-8, x[3], False, resize_from=1, resize_to=1.5): Coord(x[0], x[1]) for x in regions}
+    def __find_stage_boxes(self, stage):
+        self.__update_screen()
+        target = Elp.find(f'stages/{stage.chapter}/{stage.name}', sim_from=0.98, sim_to=0.94, update_screen=False)
+        if target:
+            return {stage.name: target}
+        subdir = f'stages/{stage.chapter}/s' if stage.issstages else f'stages/{stage.chapter}'
+        maps = {}
+        for file_ in os.scandir(f'{self.CURRENT_DIR}/assets/{subdir}'):
+            if file_.is_file():
+                stage_name = file_.name.split('.')[0]
+                stage_coord = Elp.find(f'{subdir}/{stage_name}', sim_from=0.98, sim_to=0.94, update_screen=False)
+                if stage_coord:
+                    maps[stage_name] = stage_coord
+        return maps
 
     @classmethod
-    def ocr(self, coord, w, h, invert=False, update_screen=True, resize_from=1, resize_to=1):
-        if update_screen or not self.CURRENT_SCREEN:
-            self.__update_screen()
-        crop_screen = self.CURRENT_SCREEN[coord.y:coord.y+h, coord.x:coord.x+w]
-        cv2.imwrite('yeetcropped.png', crop_screen)
-        if update_screen:
-            self.__delete_screen()
-        resize_param = resize_from
-        while resize_param <= resize_to:
-            crop_resize = cv2.resize(crop_screen.copy(), None, fx=resize_param, fy=resize_param, interpolation=cv2.INTER_CUBIC)
-            thres = cv2.threshold(crop_resize, 0, 255, cv2.THRESH_OTSU)[1]
-            if invert:
-                thres = cv2.bitwise_not(thres.copy())
-            res = image_to_string(thres, config='--psm 8')
-            print(res, resize_param)
-            if res:
-                return res
-            resize_param += 0.1
-        return ''
+    def find_current_chapter(self):
+        self.__update_screen()
+        self.CURRENT_SCREEN = self.CURRENT_SCREEN[670:700, 1058:1111]
+        for i in range(1, 6):
+            if Elp.find(f'chapter/{i}', sim_from=0.95, sim_to=0.9, update_screen=False):
+                return i
 
     @classmethod
     def find_stage(self, stage):
-        current_stages = self.__find_stage_boxes()
+        current_stages = self.__find_stage_boxes(stage)
         if stage.name not in current_stages:
-            current_stages = [int(Stage(x).level) for x in list(current_stages.keys())]
-            swipe_modifier = 0.1
-            if stage.level > max(current_stages):
-                swipe_modifier = swipe_modifier * (stage.level - max(current_stages))
-                Elp.swipe(Coord(640, 360), Coord(640-(640*swipe_modifier), 360))
-                self.find_stage(stage)
-            elif stage.level < min(current_stages):
-                swipe_modifier = swipe_modifier * (min(current_stages) - stage.level)
-                Elp.swipe(Coord(640, 360), Coord(640+(640*swipe_modifier), 360))
-                self.find_stage(stage)
-            else:
-                Elp.swipe(Coord(640, 360), Coord(randint(0, 1280), 360))
-                self.find_stage(stage)
+            current_stages = [int(x.split('-')[1]) for x in list(current_stages.keys())]
+            stage_level = int(stage.level)
+            swipe_modifier = 0.25
+            try:
+                if stage_level > max(current_stages):
+                    swipe_modifier = swipe_modifier * (stage_level - max(current_stages))
+                    Elp.swipe(Coord(640, 360), Coord(640-(640*swipe_modifier), 360), delay=3.5)
+                    return self.find_stage(stage)
+                elif stage_level < min(current_stages):
+                    swipe_modifier = swipe_modifier * (min(current_stages) - stage_level)
+                    Elp.swipe(Coord(640, 360), Coord(640+(640*swipe_modifier), 360), delay=3.5)
+                    return self.find_stage(stage)
+            except ValueError:
+                Elp.swipe(Coord(640, 360), Coord(randint(0, 1280), 360), delay=3.5)
+                return self.find_stage(stage)
         else:
             return current_stages[stage.name]
+
+    @classmethod
+    def get_recent_task(self):
+        if not os.path.isfile(f'{self.TASK_DIR}/task.json'):
+            return None
+        with open(f'{self.TASK_DIR}/task.json', 'r') as f:
+            task = json.loads(f.read())
+            return {Stage(stage): count for (stage, count) in task.items()}
+
+    @classmethod
+    def save_task(self, task):
+        if not os.path.isdir(self.TASK_DIR):
+            os.mkdir(self.TASK_DIR)
+        with open(f'{self.TASK_DIR}/task.json', 'w') as f:
+            task = {stage.name: count for (stage, count) in task.items()}
+            f.write(json.dumps(task))
+
+    @classmethod
+    def delete_task(self):
+        if not os.path.isfile(f'{self.TASK_DIR}/task.json'):
+            return None
+        os.remove(f'{self.TASK_DIR}/task.json')
+
+    @classmethod
+    def exit(self, code=0):
+        sys.exit(code)
+
