@@ -18,6 +18,7 @@ class CombatHandler:
         'auto_toggle': Coord(1150, 600),
         'start1': Coord(1142, 665),
         'start2': Coord(1105, 505),
+        'refill': Coord(1100, 575),
         'center': Coord(720, 360)
     }
     
@@ -58,7 +59,7 @@ class CombatHandler:
                         Logger.log("You don't have auto enabled for this stage! Skipping...", mode='warn')
                         break
                 while self.task[t] > 0:
-                    Elp.tap(self.BUTTONS['start1'], delay=2)
+                    Elp.tap(self.BUTTONS['start1'], delay=2.5)
                     if Elp.find('sanity_out', sim_to=0.75):
                         Logger.log('You ran out of sanity')
                         if self.refill <= 0:
@@ -67,8 +68,9 @@ class CombatHandler:
                             Elp.save_task(self.task)
                             Elp.exit(0)
                         Logger.log('Refilling sanity...')
-                        Elp.tap(self.BUTTONS['refill'])
+                        Elp.tap(self.BUTTONS['refill'], delay=2.6)
                         Elp.tap(self.BUTTONS['start1'])
+                        self.refill -= 1
                     Elp.wait_until_find('mission_start')
                     Elp.tap(self.BUTTONS['start2'])
                     Elp.wait_until_find('trust_meter')
@@ -85,7 +87,8 @@ class CombatHandler:
             Elp.save_task(self.task)
             Logger.log('Exiting...')
             Elp.exit(0)
-        except:
+        except Exception as e:
+            print(e)
             Logger.log('Something went horribly wrong', mode='error')
             Logger.log('Saving task...')
             Elp.save_task(self.task)
@@ -96,7 +99,7 @@ def parse_task(task):
     if isinstance(task[0], dict):
         return {Stage(x['stage']): int(x['count']) for x in task}
     else:
-        return {Stage(x.split(':')[0]): int(x.split(':')[1]) for x in task.split(' ')}
+        return {Stage(x.split(':')[0]): int(float(x.split(':')[1])) for x in task.split(' ')}
 
 def init(refill, task=None):
     task = parse_task(task) if task else Elp.get_recent_task()
