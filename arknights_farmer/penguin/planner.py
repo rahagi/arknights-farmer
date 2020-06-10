@@ -18,7 +18,6 @@ HEADERS = {
 
 def get_route(item_requirements):
     item_requirements = json.loads(item_requirements)
-    item_requirements = list(filter(lambda x: x['need'] > 0, item_requirements))
     req_data = {
         'required': {},
         'owned': {},
@@ -33,6 +32,7 @@ def get_route(item_requirements):
         'gold_demand': False
     }
     for item in item_requirements:
+        print(item)
         req_data['required'][item['name']] = item['need']
         if item['have'] > 0:
             req_data['owned'][item['name']] = item['have']
