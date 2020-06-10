@@ -32,7 +32,6 @@ def get_route(item_requirements):
         'gold_demand': False
     }
     for item in item_requirements:
-        print(item)
         req_data['required'][item['name']] = item['need']
         if item['have'] > 0:
             req_data['owned'][item['name']] = item['have']
