@@ -31,10 +31,10 @@ class Elp(Elper):
     @classmethod
     def __find_stage_boxes(self, stage):
         self.__update_screen()
-        target = Elp.find(f'stages/{stage.chapter}/{stage.name}', sim_from=0.98, sim_to=0.94, update_screen=False)
+        subdir = f'stages/{stage.chapter}/s' if stage.issstages else f'stages/{stage.chapter}'
+        target = Elp.find(f'{subdir}/{stage.name}', sim_from=0.98, sim_to=0.94, update_screen=False)
         if target:
             return {stage.name: target}
-        subdir = f'stages/{stage.chapter}/s' if stage.issstages else f'stages/{stage.chapter}'
         maps = {}
         for file_ in os.scandir(f'{self.CURRENT_DIR}/assets/{subdir}'):
             if file_.is_file():
