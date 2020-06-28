@@ -34,8 +34,11 @@ class CombatHandler:
             Elp.tap(self.BUTTONS['combat'])
             Elp.wait_until_find('home')
         try:
-            for t in self.task:
-                Logger.log(f'Doing {t.name} run for {self.task[t]} time(s)')
+            for t in list(self.task.keys()):
+                if self.task[t] <= 0:
+                    continue
+                    del(self.task[t])
+                Logger.log(f'Doing {t.name.upper()} run for {self.task[t]} time(s)')
                 if t.classifier == 'supplies':
                     pass
                 elif t.classifier == 'chips':
@@ -53,9 +56,9 @@ class CombatHandler:
                             Elp.tap(self.BUTTONS['prev_chp'], delay=3)
                     stage_coord = Elp.find_stage(t)
                     Elp.tap(stage_coord)
-                if Elp.find('auto_off'):
+                if Elp.find('auto_off', sim_from=0.9, sim_to=0.8):
                     Elp.tap(self.BUTTONS['auto_toggle'])
-                    if Elp.find('auto_off'):
+                    if Elp.find('auto_off', sim_from=0.9, sim_to=0.8):
                         Logger.log("You don't have auto enabled for this stage! Skipping...", mode='warn')
                         break
                 while self.task[t] > 0:
@@ -97,9 +100,9 @@ class CombatHandler:
 
 def parse_task(task):
     if isinstance(task[0], dict):
-        return {Stage(x['stage']): int(x['count']) for x in task}
+        return {Stage(x['stage']): int(float(x['count'])) for x in task}
     else:
-        return {Stage(x.split(':')[0]): int(float(x.split(':')[1])) for x in task.split(' ')}
+        return {Stage(x.split(':')[0]): int(x.split(':')[1]) for x in task.split(' ')}
 
 def init(refill, task=None):
     task = parse_task(task) if task else Elp.get_recent_task()
