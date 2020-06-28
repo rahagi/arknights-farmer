@@ -50,7 +50,7 @@ class Stage:
                     (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower() 
                     in self.CHIP_STAGES[self.opcode]
                 )
-                self.coord = self.CHIP_STAGES['lvlcoord'][int(self.level)]
+                self.coord = self.CHIP_STAGES['lvlcoord'][int(self.level)-1]
             else:
                 self.classifier = 'supplies'
                 self.opcode = s_prefix
