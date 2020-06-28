@@ -29,10 +29,10 @@ class Stage:
 
     def identify(self):
         s_prefix = self.name.split('-')[0]
-        s_postfix = self.name.split('-')[-1:][0]
-        if s_prefix.isnumeric():
+        s_suffix = self.name.split('-')[-1:][0]
+        if any(char.isdigit() for char in s_prefix):
             self.classifier = 'main'
-            self.issstages = not s_prefix.isnumeric()
+            self.issstages = not s_prefix.isdigit()
             if self.issstages:
                 self.chapter = self.name[1]
             else:
@@ -46,4 +46,4 @@ class Stage:
                 self.title = self.SUPPLY_STAGES[s_prefix]
         else:
             self.classifier = 'event'
-        self.level = s_postfix
+        self.level = s_suffix
