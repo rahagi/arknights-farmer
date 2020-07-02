@@ -57,6 +57,7 @@ class Stage:
                 self.isopen = (
                     (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower() 
                     in self.SUPPLY_STAGES[self.opcode]
+                    or self.opcode == 'ls'
                 )
                 self.coord = self.SUPPLY_STAGES['lvlcoord'][int(self.level)]
         else:
