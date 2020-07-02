@@ -2,7 +2,7 @@
 import os
 import sys
 import json
-from ..stage import Stage
+from .. import stage
 from gacha_elper.elper import Elper, cv2, np, randint
 from gacha_elper.elper import Coordinate as Coord
 from gacha_elper.adb import Adb
@@ -79,6 +79,7 @@ class Elp(Elper):
         if not os.path.isfile(f'{self.TASK_DIR}/task.json'):
             return None
         with open(f'{self.TASK_DIR}/task.json', 'r') as f:
+            Stage = stage.Stage
             task = json.loads(f.read())
             return {Stage(stage): count for (stage, count) in task.items()}
 
@@ -99,4 +100,3 @@ class Elp(Elper):
     @classmethod
     def exit(self, code=0):
         sys.exit(code)
-
