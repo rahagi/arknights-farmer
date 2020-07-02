@@ -98,8 +98,7 @@ class CombatHandler:
 def parse_task(task):
     if isinstance(task[0], dict):
         return {Stage(x['stage']): int(float(x['count'])) for x in task}
-    else:
-        return {Stage(x.split(':')[0]): int(x.split(':')[1]) for x in task.split(' ')}
+    return {Stage(x.split(':')[0]): int(x.split(':')[1]) for x in task.split(' ')}
 
 def init(refill, task=None):
     task = parse_task(task) if task else Elp.get_recent_task()

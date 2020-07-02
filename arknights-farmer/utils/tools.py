@@ -63,11 +63,10 @@ class Elp(Elper):
                 if stage_level > max(current_stages):
                     swipe_modifier = swipe_modifier * (stage_level - max(current_stages))
                     Elp.swipe(Coord(640, 360), Coord(640-(640*swipe_modifier), 360), delay=3.5)
-                    return self.find_stage(stage)
                 elif stage_level < min(current_stages):
                     swipe_modifier = swipe_modifier * (min(current_stages) - stage_level)
                     Elp.swipe(Coord(640, 360), Coord(640+(640*swipe_modifier), 360), delay=3.5)
-                    return self.find_stage(stage)
+                return self.find_stage(stage)
             except ValueError:
                 Elp.swipe(Coord(640, 360), Coord(randint(0, 1280), 360), delay=3.5)
                 return self.find_stage(stage)
