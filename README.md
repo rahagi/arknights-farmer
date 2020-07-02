@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ### From Source
 
-Clone this repository using `git clone` command. 
+Clone this repository using `git clone` command (or just download the `zip` version). 
 
 Run the script using the following command inside the repo directory.
 ```bash
@@ -43,6 +43,18 @@ optional args:
   -r REFILL, --refill REFILL
                         how many times you want to refill. default is 0
 ```
+
+### Connect to ADB
+
+Use the `adb devices` command to check if your adb client is connected to your emulator.
+
+Refer to your emulator manual on how to connect your adb client.
+
+### Emulator Setting
+
+Make sure to use the following display settings on your emulator:
+* Display Resolution: 1280x720
+* DPI: 240 DPI
 
 ## Contributing
 Pull requests are welcome. 
