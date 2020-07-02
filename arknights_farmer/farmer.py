@@ -48,7 +48,7 @@ class CombatHandler:
                         Logger.log(f'{stage.name.upper()} is currently not open', mode='warn')
                         continue
                     Elp.tap(self.BUTTONS[stage.classifier])
-                    op_coord = Elp.find(f'dialy_resources/{stage.opcode}', sim_from=0.98, sim_to=0.9)
+                    op_coord = Elp.find(f'daily_resources/{stage.opcode}', sim_from=0.98, sim_to=0.9)
                     Elp.tap(op_coord)
                     Elp.tap(stage.coord)
                 elif stage.classifier == 'event':
