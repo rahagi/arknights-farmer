@@ -10,14 +10,14 @@ Farming assistant for Arknights.
 * pip
 * adb from android platform-tools added to your `$PATH`
 
-If you are installing this from source, you first need to install the dependencies using `pip`.
-```bash
-$ pip install -r requirements.txt
-```
-
 ### From Source
 
 Clone this repository using `git clone` command (or just download the `zip` version). 
+
+Install the dependencies using `pip`.
+```bash
+$ pip install -r requirements.txt
+```
 
 Run the script using the following command inside the repo directory.
 ```bash
@@ -67,6 +67,7 @@ $ arknights-farmer -s 1-7:100           # runs 1-7 100 times (will stop whenever
 $ arknights-farmer -s 1-7:100 -r 10     # runs 1-7 100 times with 10 times sanity refill (prioritizes using sanity potion)
 $ arknights-farmer -c                   # continues the most recent halted farming session
 ```
+Before starting the script, make sure to set yourself in the main menu screen.
 
 You can safely stop the script using `Ctrl-C`. It will save the ongoing farming task(s) before quitting.
 
