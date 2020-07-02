@@ -6,18 +6,22 @@ Farming assistant for Arknights.
 
 ### Prerequisites
 
-If you are installing this from source, install the dependencies using `pip`
-```bash
-pip install -r requirements.txt
-```
+* Python >= 3.7.4
+* pip
+* adb from android platform-tools added to your `$PATH`
 
 ### From Source
 
 Clone this repository using `git clone` command (or just download the `zip` version). 
 
+Install the dependencies using `pip`.
+```bash
+$ pip install -r requirements.txt
+```
+
 Run the script using the following command inside the repo directory.
 ```bash
-python3 -m arknights-farmer
+$ python3 -m arknights-farmer
 ```
 ### From PyPi
 
@@ -56,6 +60,17 @@ Make sure to use the following display settings on your emulator:
 * Display Resolution: 1280x720
 * DPI: 240 DPI
 
+### Examples
+
+```bash
+$ arknights-farmer -s 1-7:100           # runs 1-7 100 times (will stop whenever you run out of sanity)
+$ arknights-farmer -s 1-7:100 -r 10     # runs 1-7 100 times with 10 times sanity refill (prioritizes using sanity potion)
+$ arknights-farmer -c                   # continues the most recent halted farming session
+```
+Before starting the script, make sure to set yourself in the main menu screen.
+
+You can safely stop the script using `Ctrl-C`. It will save the ongoing farming task(s) before quitting.
+
 ## Contributing
 Pull requests are welcome. 
 
@@ -64,6 +79,6 @@ Licensed under the MIT License. See `LICENSE` for more information.
 
 ## Disclaimer
 
-It has not been clear wheter it is safe to use this tool or not. Author is not responsible for what happens to your account.
+It has not been clear whether it is safe to use this tool or not. I am not responsible for what happens to your account.
 
 Use at your own risk.
