@@ -11,8 +11,6 @@ class CombatHandler:
         'home2': Coord(90, 283),
         'combat': Coord(995, 200),
         'combat2': Coord(535, 185),
-        'supplies': Coord(240, 665),
-        'chips': Coord(380, 665),
         'next_chp': Coord(1185, 665),
         'prev_chp': Coord(980, 665),
         'auto_toggle': Coord(1150, 600),
