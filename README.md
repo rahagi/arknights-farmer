@@ -14,6 +14,7 @@ pip install -r requirements.txt
 ### From Source
 
 Clone this repository using `git clone` command. 
+
 Run the script using the following command inside the repo directory.
 ```bash
 python3 -m arknights-farmer
