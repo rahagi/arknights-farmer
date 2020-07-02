@@ -47,7 +47,7 @@ class Stage:
                 self.classifier = 'chips'
                 self.opcode = name[1]
                 self.isopen = (
-                    (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower() 
+                    (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower()
                     in self.CHIP_STAGES[self.opcode]
                 )
                 self.coord = self.CHIP_STAGES['lvlcoord'][int(self.level)-1]
