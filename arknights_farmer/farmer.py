@@ -35,8 +35,8 @@ class CombatHandler:
 
     def start(self):
         if not Elp.find('combat'):
-            Elp.tap(self.BUTTONS['home1']) 
-            Elp.tap(self.BUTTONS['combat2']) 
+            Elp.tap(self.BUTTONS['home1'])
+            Elp.tap(self.BUTTONS['combat2'])
         else:
             Elp.tap(self.BUTTONS['combat'])
             Elp.wait_until_find('home')

@@ -100,4 +100,3 @@ class Elp(Elper):
     @classmethod
     def exit(self, code=0):
         sys.exit(code)
-
