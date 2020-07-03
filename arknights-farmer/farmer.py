@@ -53,7 +53,7 @@ class CombatHandler:
                 elif stage.classifier == 'event':
                     continue
                 else:
-                    Elp.tap(self.BUTTONS['combat'], delay=2)
+                    Elp.tap(self.BUTTONS['combat'], delay=3.5)
                     current_chapter = Elp.find_current_chapter()
                     target_chapter = int(stage.chapter)
                     for _ in range(abs(target_chapter - current_chapter)):
@@ -69,7 +69,7 @@ class CombatHandler:
                         Logger.log("You don't have auto enabled for this stage! Skipping...", mode='warn')
                         continue
                 while self.task[stage] > 0:
-                    Elp.tap(self.BUTTONS['start1'], delay=2)
+                    Elp.tap(self.BUTTONS['start1'], delay=3)
                     if Elp.find('sanity_out', sim_to=0.75):
                         Logger.log('You ran out of sanity')
                         if self.refill <= 0:
