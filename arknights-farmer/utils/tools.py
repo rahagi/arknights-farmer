@@ -48,7 +48,7 @@ class Elp(Elper):
     def find_current_chapter(self):
         self.__update_screen()
         self.CURRENT_SCREEN = self.CURRENT_SCREEN[670:700, 1058:1111]
-        for i in range(1, 6):
+        for i in range(1, 7):
             if Elp.find(f'chapter/{i}', sim_from=0.95, sim_to=0.9, update_screen=False):
                 return i
 
