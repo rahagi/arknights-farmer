@@ -62,7 +62,7 @@ class CombatHandler:
                         else:
                             Elp.tap(self.BUTTONS['prev_chp'], delay=3)
                     stage_coord = Elp.find_stage(stage)
-                    Elp.tap(stage_coord)
+                    Elp.tap(stage_coord, random_radius=5)
                 if Elp.find('auto_off', sim_from=0.9, sim_to=0.8):
                     Elp.tap(self.BUTTONS['auto_toggle'])
                     if Elp.find('auto_off', sim_from=0.9, sim_to=0.8):
