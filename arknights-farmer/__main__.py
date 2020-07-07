@@ -9,7 +9,7 @@ required_args = ap.add_argument_group('required args')
 optional_args = ap.add_argument_group('optional args')
 required_args.add_argument('-p', '--penguin', action='store_true',
                            help='use farm route data from penguin-stats.io (experimental do not use)')
-required_args.add_argument('-s', '--stage',
+required_args.add_argument('-s', '--stage', nargs='+',
                            help='manually add stage(s) to farm task (e.g. 1-7:100 4-4:25 (separated by whitespace))')
 required_args.add_argument('-c', '--cont', action='store_true',
                            help='continue from the most recent farming session')
