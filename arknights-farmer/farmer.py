@@ -91,14 +91,14 @@ class CombatHandler:
             Logger.log('Exiting...')
         except KeyboardInterrupt:
             self.terminate()
-        except:
+        except Exception as e:
             Logger.log('Something went horribly wrong', mode='error')
             self.terminate(1)
 
 def parse_task(task):
     if isinstance(task[0], dict):
         return {Stage(x['stage']): int(float(x['count'])) for x in task}
-    return {Stage(k): v for k, v in (x.split(':') for x in task)}
+    return {Stage(k): int(v) for k, v in (x.split(':') for x in task)}
 
 def init(refill, task=None):
     task = parse_task(task) if task else Elp.get_recent_task()
