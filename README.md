@@ -65,6 +65,7 @@ Make sure to use the following display settings on your emulator:
 ```bash
 $ arknights-farmer -s 1-7:100           # runs 1-7 100 times (will stop whenever you run out of sanity)
 $ arknights-farmer -s 1-7:100 -r 10     # runs 1-7 100 times with 10 times sanity refill (prioritizes using sanity potion)
+$ arknights-farmer -s 1-7:100 ce-5:20   # runs 1-7 100 times then CE-5 20 times
 $ arknights-farmer -c                   # continues the most recent halted farming session
 ```
 Before starting the script, make sure to set yourself in the main menu screen.
