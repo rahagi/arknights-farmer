@@ -1,3 +1,6 @@
+dist/*
+arknights_farmer.egg-info/*
+build/*
 *venv*
 *.vscode*
 *__pycache__*

@@ -23,9 +23,17 @@ Run the script using the following command inside the repo directory.
 ```bash
 $ python3 -m arknights-farmer
 ```
-### From PyPi
+### From PyPi (Recommended)
 
-Soon
+For Windows users (run `cmd` as administrator):
+```bash
+pip install arknights-farmer
+```
+
+For Linux users:
+```bash
+$ sudo pip install arknights-farmer
+```
 
 ## Usage
 
