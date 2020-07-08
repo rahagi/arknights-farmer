@@ -16,7 +16,7 @@ required_args.add_argument('-c', '--cont', action='store_true',
 optional_args.add_argument('-r', '--refill', default=0, type=int,
                            help='how many times you want to refill. default is 0')
 
-if __name__ == '__main__':
+def main():
     args = ap.parse_args()
     if not (args.penguin or args.stage or args.cont):
         ap.error('no argument specified')
@@ -37,3 +37,6 @@ if __name__ == '__main__':
             init(args.refill, task)
         else:
             init(args.refill, args.stage)
+
+if __name__ == '__main__':
+    main()
