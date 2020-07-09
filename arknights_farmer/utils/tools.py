@@ -10,7 +10,7 @@ from gacha_elper.adb import Adb
 class Elp(Elper):
 
     TASK_DIR = (f'{os.environ["LOCALAPPDATA"]}/arknights-farmer' 
-                if os.name == 'win' 
+                if os.name == 'nt'
                 else f'{os.environ["HOME"]}/.cache/arknights-farmer')
 
     @classmethod
