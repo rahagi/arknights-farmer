@@ -3,6 +3,7 @@ import os
 import sys
 import json
 from .. import stage
+from ..__init__ import __rootdir__
 from gacha_elper.elper import Elper, cv2, np, randint
 from gacha_elper.elper import Coordinate as Coord
 from gacha_elper.adb import Adb
@@ -10,8 +11,9 @@ from gacha_elper.adb import Adb
 class Elp(Elper):
 
     TASK_DIR = (f'{os.environ["LOCALAPPDATA"]}/arknights-farmer' 
-                if os.name == 'win' 
+                if os.name == 'nt'
                 else f'{os.environ["HOME"]}/.cache/arknights-farmer')
+    CURRENT_DIR = __rootdir__
 
     @classmethod
     def __update_screen(self, bgr=0):
