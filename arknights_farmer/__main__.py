@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+from .__init__ import __version__
 from .penguin import planner
 from .farmer import init
 from .utils.tools import Elp
@@ -15,9 +16,14 @@ required_args.add_argument('-c', '--cont', action='store_true',
                            help='continue from the most recent farming session')
 optional_args.add_argument('-r', '--refill', default=0, type=int,
                            help='how many times you want to refill. default is 0')
+optional_args.add_argument('-v', '--version', action='store_true',
+                           help='show version')
 
 def main():
     args = ap.parse_args()
+    if args.version:
+        print(f'arknights-farmer version: {__version__}')
+        Elp.exit()
     if not (args.penguin or args.stage or args.cont):
         ap.error('no argument specified')
     if args.cont:
