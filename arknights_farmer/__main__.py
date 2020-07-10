@@ -34,8 +34,7 @@ def main():
             if 'y' in input('Do you want to continue from where you left off? [Y/n]: ').lower():
                 init(args.refill)
                 Elp.exit()
-            else:
-                init(args.refill, args.stage)
+        init(args.refill, args.stage)
 
 if __name__ == '__main__':
     main()
