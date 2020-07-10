@@ -80,7 +80,7 @@ class CombatHandler:
                         self.refill -= 1
                     Elp.wait_until_find('mission_start')
                     Elp.tap(self.BUTTONS['start2'])
-                    Elp.wait_until_find('trust_meter', interval=1.5)
+                    Elp.wait_until_find('trust_meter', crop_from=Coord(832, 453), crop_to=Coord(870, 496), interval=1.5)
                     Elp.tap(self.BUTTONS['center'])
                     Elp.wait_until_find('home')
                     self.task[stage] -= 1
