@@ -38,15 +38,13 @@ $ sudo pip install arknights-farmer
 ## Usage
 
 ```
-usage: arknights-farmer [-h] [-p] [-s STAGE] [-c] [-r REFILL]
+usage: arknights-farmer [-h] [-s STAGE [STAGE ...]] [-c] [-r REFILL] [-l] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
 
 required args:
-  -p, --penguin         use farm route data from penguin-stats.io
-                        (experimental do not use)
-  -s STAGE, --stage STAGE
+  -s STAGE [STAGE ...], --stage STAGE [STAGE ...]
                         manually add stage(s) to farm task (e.g. 1-7:100
                         4-4:25 (separated by whitespace))
   -c, --cont            continue from the most recent farming session
@@ -54,6 +52,8 @@ required args:
 optional args:
   -r REFILL, --refill REFILL
                         how many times you want to refill. default is 0
+  -l, --list-task       list unfinished task(s) from recent farming session
+  -v, --version         show version
 ```
 
 ### Connect to ADB
