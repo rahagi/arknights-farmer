@@ -4,3 +4,4 @@ build/*
 *venv*
 *.vscode*
 *__pycache__*
+deploy-pypi
