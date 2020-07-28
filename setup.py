@@ -16,6 +16,7 @@ setuptools.setup(
         url='https://github.com/cytopz/arknights-farmer',
         packages=setuptools.find_packages(),
         install_requires=['gacha-elper', 'urllib3', 'requests'],
+        include_package_data=True,
         entry_points={'console_scripts': ['arknights-farmer=arknights_farmer.__main__:main']},
         classifiers=[
             "Development Status :: 3 - Alpha",
