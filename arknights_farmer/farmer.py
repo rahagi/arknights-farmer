@@ -86,6 +86,7 @@ class CombatHandler:
                     ):
                         Elp.wait(1.5)
                     Elp.tap(self.BUTTONS['center'])
+                    Elp.tap(self.BUTTONS['center'])
                     Elp.wait_until_find('home')
                     self.task[stage] -= 1
                 Elp.tap(self.BUTTONS['home1'])
