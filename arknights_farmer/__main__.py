@@ -18,6 +18,8 @@ optional_args.add_argument('-l', '--list-task', action='store_true',
                            help='list unfinished task(s) from recent farming session')
 optional_args.add_argument('-v', '--version', action='store_true',
                            help='show version')
+optional_args.add_argument('-m', '--manual', type=int,
+                           help='manual mode (good for single stage farming like event stages)')
 
 def main():
     args = ap.parse_args()
@@ -39,10 +41,12 @@ def main():
         else:
             Logger.log("You don't have unfinished task")
         Elp.exit()
-    if not (args.stage or args.cont):
+    if not (args.stage or args.cont or args.manual):
         ap.error('No argument specified')
     if args.cont:
         init(args.refill)
+    if args.manual:
+        init(args.refill, manual=args.manual)
     else:
         if recent_task:
             Logger.log('You have an unfinished task from the last farming session:', mode='warn')
