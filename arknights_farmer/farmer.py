@@ -81,8 +81,8 @@ class CombatHandler:
                     Elp.wait_until_find('mission_start')
                     Elp.tap(self.BUTTONS['start2'])
                     while (
-                            not Tools.find('trust_meter', crop_from=Coord(822, 443), crop_to=Coord(880, 516))
-                            and not Tools.find('lvlup', crop_from=Coord(652, 316), crop_to=Coord(844, 416))
+                            not Elp.find('trust_meter', crop_from=Coord(822, 443), crop_to=Coord(880, 516))
+                            and not Elp.find('lvlup', crop_from=Coord(652, 316), crop_to=Coord(844, 416))
                     ):
                         Elp.wait(1.5)
                     Elp.tap(self.BUTTONS['center'])
