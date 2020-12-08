@@ -12,7 +12,7 @@ class Elp(Elper):
 
     TASK_DIR = (f'{os.environ["LOCALAPPDATA"]}/arknights-farmer' 
                 if os.name == 'nt'
-                else f'{os.environ["HOME"]}/.cache/arknights-farmer')
+                else f'{os.environ["HOME"]}/.local/share/arknights-farmer')
     CURRENT_DIR = __rootdir__
 
     @classmethod
