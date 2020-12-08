@@ -39,6 +39,7 @@ $ sudo pip install arknights-farmer
 
 ```
 usage: arknights-farmer [-h] [-s STAGE [STAGE ...]] [-c] [-r REFILL] [-l] [-v]
+                        [-m MANUAL]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -54,6 +55,9 @@ optional args:
                         how many times you want to refill. default is 0
   -l, --list-task       list unfinished task(s) from recent farming session
   -v, --version         show version
+  -m MANUAL, --manual MANUAL
+                        manual mode (good for single stage farming like event
+                        stages)
 ```
 
 ### Connect to ADB

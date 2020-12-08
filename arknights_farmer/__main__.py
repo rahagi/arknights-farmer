@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import argparse
+from .farmer import init as farmer_init
 from .__init__ import __version__
-from .farmer import init
 from .utils.tools import Elp
+from .utils.tools import Adb
 from .utils.logger import Logger
 
 ap = argparse.ArgumentParser(prog='arknights-farmer')
@@ -12,14 +13,20 @@ required_args.add_argument('-s', '--stage', nargs='+',
                            help='manually add stage(s) to farm task (e.g. 1-7:100 4-4:25 (separated by whitespace))')
 required_args.add_argument('-c', '--cont', action='store_true',
                            help='continue from the most recent farming session')
-optional_args.add_argument('-r', '--refill', default=0, type=int,
+optional_args.add_argument('-r', '--refill', default=0, type=int, metavar='AMOUNT',
                            help='how many times you want to refill. default is 0')
 optional_args.add_argument('-l', '--list-task', action='store_true',
                            help='list unfinished task(s) from recent farming session')
 optional_args.add_argument('-v', '--version', action='store_true',
                            help='show version')
-optional_args.add_argument('-m', '--manual', type=int,
+optional_args.add_argument('-m', '--manual', type=int, metavar='AMOUNT',
                            help='manual mode (good for single stage farming like event stages)')
+
+def init(refill, task=None, manual=0):
+    if not Adb.list_devices():
+        Logger.log('No device/emulator found', mode='error')
+        Elp.exit(1)
+    farmer_init(refill, task, manual)
 
 def main():
     args = ap.parse_args()
