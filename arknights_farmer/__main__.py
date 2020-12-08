@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import argparse
+from .farmer import init as farmer_init
 from .__init__ import __version__
-from .farmer import init
 from .utils.tools import Elp
+from .utils.tools import Adb
 from .utils.logger import Logger
 
 ap = argparse.ArgumentParser(prog='arknights-farmer')
@@ -20,6 +21,12 @@ optional_args.add_argument('-v', '--version', action='store_true',
                            help='show version')
 optional_args.add_argument('-m', '--manual', type=int, metavar='AMOUNT',
                            help='manual mode (good for single stage farming like event stages)')
+
+def init(refill, task=None, manual=0):
+    if not Adb.list_devices():
+        Logger.log('No device/emulator found', mode='error')
+        Elp.exit(1)
+    farmer_init(refill, task, manual)
 
 def main():
     args = ap.parse_args()
