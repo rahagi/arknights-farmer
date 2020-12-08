@@ -50,6 +50,7 @@ class CombatHandler:
             Elp.tap(op_coord)
             Elp.tap(stage.coord)
         elif stage.classifier == 'event':
+            Logger.log('Event stages are not implemented yet. Use manual mode instead', mode='warn')
             return False
         else:
             Elp.tap(self.BUTTONS['combat'], delay=3.5)
@@ -112,7 +113,7 @@ class CombatHandler:
                         continue
                     while self.task[stage] > 0:
                         self.__enter_battle()
-                        self.__handle_end_battle
+                        self.__handle_end_battle()
                         self.task[stage] -= 1
                     Elp.tap(self.BUTTONS['home1'])
                     Elp.tap(self.BUTTONS['combat2'])
@@ -132,7 +133,7 @@ def parse_task(task):
 
 def init(refill, task=None, manual=0):
     if manual > 0:
-        c = CombatHandler(refill=0, manual=manual)
+        c = CombatHandler(refill=refill, manual=manual)
         c.start()
     else:
         task = parse_task(task) if task else Elp.get_recent_task()
