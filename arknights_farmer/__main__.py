@@ -26,6 +26,9 @@ def init(refill, task=None, manual=0):
     if not Adb.list_devices():
         Logger.log('No device/emulator found', mode='error')
         Elp.exit(1)
+    elif len(Adb.list_devices()) > 1:
+        Logger.log('More than one device/emulator', mode='error')
+        Elp.exit(1)
     farmer_init(refill, task, manual)
 
 def main():

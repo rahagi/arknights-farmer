@@ -1,4 +1,4 @@
 import os
 
 __rootdir__ = os.path.dirname(os.path.abspath(__file__))
-__version__ = "2020.12.08"
+__version__ = "2020.12.10"

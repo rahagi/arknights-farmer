@@ -51,11 +51,11 @@ required args:
   -c, --cont            continue from the most recent farming session
 
 optional args:
-  -r REFILL, --refill REFILL
+  -r AMOUNT, --refill AMOUNT
                         how many times you want to refill. default is 0
   -l, --list-task       list unfinished task(s) from recent farming session
   -v, --version         show version
-  -m MANUAL, --manual MANUAL
+  -m AMOUNT, --manual AMOUNT
                         manual mode (good for single stage farming like event
                         stages)
 ```
