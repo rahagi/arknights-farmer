@@ -38,16 +38,13 @@ class Stage:
         if any(char.isdigit() for char in s_prefix):
             self.classifier = 'main'
             self.issstages = not s_prefix.isdigit()
-            if self.issstages:
-                self.chapter = self.name[1]
-            else:
-                self.chapter = self.name[0]
+            self.chapter = self.name[1] if self.issstages else self.name[0]
         elif self.name not in self.EVENT_STAGES:
             if len(self.name.split('-')) == 3:
                 self.classifier = 'chips'
                 self.opcode = name[1]
                 self.isopen = (
-                    (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower()
+                    (datetime.utcnow() - timedelta(hours=11)).strftime('%a').lower()
                     in self.CHIP_STAGES[self.opcode]
                 )
                 self.coord = self.CHIP_STAGES['lvlcoord'][int(self.level)-1]
@@ -55,7 +52,7 @@ class Stage:
                 self.classifier = 'supplies'
                 self.opcode = s_prefix
                 self.isopen = (
-                    (datetime.utcnow() - timedelta(hours=7)).strftime('%a').lower() 
+                    (datetime.utcnow() - timedelta(hours=11)).strftime('%a').lower() 
                     in self.SUPPLY_STAGES[self.opcode]
                     or self.opcode == 'ls'
                 )
