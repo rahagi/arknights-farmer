@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from datetime import datetime
+from .ws_client import WSClient
 
 class Logger:
 
@@ -8,7 +9,6 @@ class Logger:
         os.system('color')
     
     DEBUG = False
-
     MODE = {
         'info': '\033[94m',
         'warn': '\033[93m',
@@ -18,7 +18,9 @@ class Logger:
 
     @classmethod
     def log(self, *msg, mode='info'):
-        print(f'{self.MODE[mode]}[{mode[0].upper()}][{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {" ".join(msg)}{self.MODE["end"]}')
+        m = f'[{mode[0].upper()}][{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {" ".join(msg)}'
+        WSClient.send('on-log', msg)
+        print(f'{self.MODE[mode]}{m}{self.MODE["end"]}')
 
     @classmethod
     def log_debug(self, *msg):

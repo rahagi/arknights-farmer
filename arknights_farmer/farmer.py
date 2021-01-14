@@ -2,6 +2,7 @@
 from .stage import Stage
 from .utils.tools import Elp
 from .utils.logger import Logger
+from .utils.ws_client import WSClient
 from gacha_elper.elper import Coordinate as Coord
 
 class CombatHandler:
@@ -40,7 +41,7 @@ class CombatHandler:
         Elp.wait_until_find('mission_start')
         Elp.tap(self.BUTTONS['start2'])
 
-    def __enter_stage(self):
+    def __enter_stage(self, stage):
         if stage.classifier == 'supplies' or stage.classifier == 'chips':
             if not stage.isopen:
                 Logger.log(f'{stage.name.upper()} is currently not open', mode='warn')
@@ -85,6 +86,7 @@ class CombatHandler:
             Logger.log('Saving task...')
             Elp.save_task(self.task)
         Logger.log('Exitting...')
+        WSClient.send('on-exit', code)
         Elp.exit(code)
 
     def start(self):
@@ -109,21 +111,25 @@ class CombatHandler:
             else:
                 for stage in list(self.task.keys()):
                     Logger.log(f'Doing {stage.name} run for {self.task[stage]} time(s)')
-                    if not self.__enter_stage():
+                    WSClient.send('on-progress', stage.name)
+                    if not self.__enter_stage(stage):
                         continue
                     while self.task[stage] > 0:
-                        self.__enter_battle()
+                        self.__enter_battle(stage)
                         self.__handle_end_battle()
                         self.task[stage] -= 1
                     Elp.tap(self.BUTTONS['home1'])
                     Elp.tap(self.BUTTONS['combat2'])
+                    WSClient.send('on-finish', stage.name)
                     del(self.task[stage])
             Logger.log('Completed all task')
             Logger.log('Exiting...')
+            WSClient.send('on-exit', 0)
         except KeyboardInterrupt:
             self.terminate()
         except Exception as e:
-            Logger.log('Something went horribly wrong', mode='error')
+            msg = 'Something went horribly wrong'
+            Logger.log(msg, mode='error')
             self.terminate(1)
 
 def parse_task(task):
