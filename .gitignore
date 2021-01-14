@@ -1,4 +1,4 @@
-dist/*
+*dist/*
 arknights_farmer.egg-info/*
 build/*
 *venv*
