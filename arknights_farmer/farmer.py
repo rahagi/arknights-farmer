@@ -27,6 +27,7 @@ class CombatHandler:
         self.task = task
         self.refill = refill
         self.manual = manual
+        WSClient.init()
 
     def __enter_battle(self):
         Elp.tap(self.BUTTONS['start1'], delay=3)
@@ -98,6 +99,7 @@ class CombatHandler:
                 Elp.tap(self.BUTTONS['combat'])
                 Elp.wait_until_find('home')
         try:
+            WSClient.send('on-start')
             if self.manual > 0:
                 Logger.log("Waiting for you to enter a stage...")
                 Elp.wait_until_find('exit_battle')
@@ -115,7 +117,7 @@ class CombatHandler:
                     if not self.__enter_stage(stage):
                         continue
                     while self.task[stage] > 0:
-                        self.__enter_battle(stage)
+                        self.__enter_battle()
                         self.__handle_end_battle()
                         self.task[stage] -= 1
                     Elp.tap(self.BUTTONS['home1'])
