@@ -4,3 +4,5 @@ opencv-python==4.2.0.34
 requests==2.23.0
 scipy==1.4.1
 urllib3==1.25.9
+fastapi==0.63.0
+uvicorn==0.13.3
