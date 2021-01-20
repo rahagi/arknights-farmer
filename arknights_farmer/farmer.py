@@ -19,6 +19,7 @@ class CombatHandler:
         'start2': Coord(1105, 505),
         'refill': Coord(1100, 575),
         'center': Coord(720, 360),
+        'main_stages': Coord(90, 650),
         'chips': Coord(400, 650),
         'supplies': Coord(250, 650)
     }
@@ -98,6 +99,7 @@ class CombatHandler:
             else:
                 Elp.tap(self.BUTTONS['combat'])
                 Elp.wait_until_find('home')
+            Elp.tap(self.BUTTONS['main_stages'])
         try:
             WSClient.send('on-start')
             if self.manual > 0:
