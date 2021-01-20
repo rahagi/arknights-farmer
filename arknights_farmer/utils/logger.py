@@ -19,7 +19,7 @@ class Logger:
     @classmethod
     def log(self, *msg, mode='info'):
         m = f'[{mode[0].upper()}][{datetime.today().strftime("%Y-%m-%d %H:%M:%S")}] {" ".join(msg)}'
-        WSClient.send('on-log', msg)
+        WSClient.send('on-log', m)
         print(f'{self.MODE[mode]}{m}{self.MODE["end"]}')
 
     @classmethod
