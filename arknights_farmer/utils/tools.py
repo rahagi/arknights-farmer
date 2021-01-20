@@ -10,10 +10,8 @@ from gacha_elper.adb import Adb
 
 class Elp(Elper):
 
-    TASK_DIR = (f'{os.environ["LOCALAPPDATA"]}/arknights-farmer' 
-                if os.name == 'nt'
-                else f'{os.environ["HOME"]}/.local/share/arknights-farmer')
     CURRENT_DIR = __rootdir__
+    TASK_DIR = f'{__rootdir__}/data'
 
     @classmethod
     def __update_screen(self, bgr=0):
@@ -82,14 +80,14 @@ class Elp(Elper):
         with open(f'{self.TASK_DIR}/task.json', 'r') as f:
             Stage = stage.Stage
             task = json.loads(f.read())
-            return {Stage(stage): count for (stage, count) in task.items()}
+            return [{'stage': Stage(stage), 'count': count} for (stage, count) in task.items()]
 
     @classmethod
     def save_task(self, task):
         if not os.path.isdir(self.TASK_DIR):
             os.mkdir(self.TASK_DIR)
         with open(f'{self.TASK_DIR}/task.json', 'w') as f:
-            task = {stage.name: count for (stage, count) in task.items()}
+            task = [{'stage': stage, 'count': count} for (stage, count) in task.items()]
             f.write(json.dumps(task))
 
     @classmethod
