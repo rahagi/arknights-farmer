@@ -3,6 +3,12 @@ from arknights_farmer.utils.tools import Adb
 
 router = APIRouter(prefix='/adb')
 
+@router.post('/connect')
+def connect(host: str, port: str):
+    res = Adb.connect(host, port)
+    res = res.decode('utf-8')
+    return {'connect': False if 'failed' in res else True}
+
 @router.get('/devices')
 def devices():
     devices = Adb.list_devices()
