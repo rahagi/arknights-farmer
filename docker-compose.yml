@@ -1,0 +1,30 @@
+version: '3.7'
+
+services: 
+  farmer:
+    container_name: arknights-farmer
+    restart: always
+    build: .
+    volumes: 
+      - ./arknights_farmer/data:/arknights-farmer/arknights_farmer/data
+    ports:
+      - 5000:5000
+    networks:
+      - farmernet
+    privileged: true
+
+  ui:
+    container_name: arknights-farmer-webui
+    restart: always
+    depends_on: 
+      - farmer
+    restart: always
+    build: ./webui/.
+    ports:
+      - 80:80
+    networks: 
+      - farmernet
+
+networks:
+  farmernet:
+    driver: bridge
