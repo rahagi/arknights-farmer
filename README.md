@@ -2,6 +2,8 @@
 
 Farming assistant for Arknights.
 
+Check out this [branch](https://github.com/cytopz/arknights-farmer/tree/with-webui) for a version with web UI.
+
 ## Installation
 
 ### Prerequisites
