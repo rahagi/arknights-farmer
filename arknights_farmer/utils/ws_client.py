@@ -15,7 +15,6 @@ class WSClient:
             try:
                 self.send('ping', 'ping')
                 pong = self.recv()
-                print('pong:', pong)
                 time.sleep(5)
             except Exception:
                 continue
@@ -26,8 +25,6 @@ class WSClient:
             'event': event,
             'msg': msg
         }
-        if event == 'on-exit':
-            print('onEXITsend')
         self.WS_CONN.send(json.dumps(m))
 
     @classmethod
@@ -37,7 +34,6 @@ class WSClient:
     
     @classmethod
     def close(self):
-        print('onEXITclose')
         self.WS_CONN.close()
 
     @classmethod

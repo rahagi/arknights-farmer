@@ -19,11 +19,9 @@ class ConnPool:
     async def connect(self, ws: WebSocket):
         await ws.accept()
         self.active_conn.append(ws)
-        print(f'{ws} con')
     
     def remove(self, ws: WebSocket):
         self.active_conn.remove(ws)
-        print(f'{ws} dis')
     
     async def send(self, ws: WebSocket, evt: str, msg: Any):
         await ws.send_json(self.__create_msg(evt, msg))
@@ -32,7 +30,6 @@ class ConnPool:
         for conn in self.active_conn:
             if conn is not ws:
                 await conn.send_json(self.__create_msg(evt or 'broadcast', msg))
-                print(f'{ws},{conn}')
 
 pool = ConnPool()
 curr_state = GameState()
@@ -45,7 +42,6 @@ async def ws_endpoint(ws: WebSocket):
             data = await ws.receive_json()
             event, msg = [data[k] for k in data]
             global curr_state
-            print(event)
             if event == WSEvents.ON_LOG:
                 curr_state.log.append(msg)
             elif event == WSEvents.ON_PROGRESS:
