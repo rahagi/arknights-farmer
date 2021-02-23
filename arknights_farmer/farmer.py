@@ -75,7 +75,7 @@ class CombatHandler:
     
     def __handle_end_battle(self):
         while (
-                not Elp.find('trust_meter', crop_from=Coord(822, 443), crop_to=Coord(880, 516))
+                not Elp.find('end_star', crop_from=Coord(165, 490), crop_to=Coord(400, 565))
                 and not Elp.find('lvlup', crop_from=Coord(652, 316), crop_to=Coord(844, 416))
         ):
             Elp.wait(1.5)
