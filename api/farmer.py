@@ -26,5 +26,6 @@ async def start(task: List[Task], refill: Optional[int] = 0):
 
 @router.get('/get-recent-task')
 async def get_recent_task():
-    return [{'stage': task['stage'].name, 'count': task['count']} for task in Elp.get_recent_task()]
+    recent = Elp.get_recent_task()
+    return [{'stage': stage.name, 'count': count} for stage, count in recent.items()] if recent else [];
 

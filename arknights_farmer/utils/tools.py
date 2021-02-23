@@ -39,7 +39,7 @@ class Elp(Elper):
         for file_ in os.scandir(f'{self.CURRENT_DIR}/assets/{subdir}'):
             if file_.is_file():
                 stage_name = file_.name.split('.')[0]
-                stage_coord = Elp.find(f'{subdir}/{stage_name}', sim_from=0.98, sim_to=0.94, update_screen=False)
+                stage_coord = Elp.find(f'{subdir}/{stage_name}', sim_from=0.98, sim_to=0.9, update_screen=False)
                 if stage_coord:
                     maps[stage_name] = stage_coord
         return maps
@@ -48,7 +48,8 @@ class Elp(Elper):
     def find_current_chapter(self):
         self.__update_screen()
         self.CURRENT_SCREEN = self.CURRENT_SCREEN[670:700, 1058:1111]
-        for i in range(1, 7):
+        chapter_nums = len(os.listdir(f'{self.CURRENT_DIR}/assets/chapter'))
+        for i in range(1, chapter_nums+1):
             if Elp.find(f'chapter/{i}', sim_from=0.95, sim_to=0.9, update_screen=False):
                 return i
 
@@ -79,15 +80,18 @@ class Elp(Elper):
             return None
         with open(f'{self.TASK_DIR}/task.json', 'r') as f:
             Stage = stage.Stage
-            task = json.loads(f.read())
-            return [{'stage': Stage(stage), 'count': count} for (stage, count) in task.items()]
+            try:
+                task = json.loads(f.read())
+            except json.decoder.JSONDecodeError:
+                return None
+            return {Stage(t['stage']): t['count'] for t in task}
 
     @classmethod
     def save_task(self, task):
         if not os.path.isdir(self.TASK_DIR):
             os.mkdir(self.TASK_DIR)
         with open(f'{self.TASK_DIR}/task.json', 'w') as f:
-            task = [{'stage': stage, 'count': count} for (stage, count) in task.items()]
+            task = [{'stage': stage.name, 'count': count} for (stage, count) in task.items()]
             f.write(json.dumps(task))
 
     @classmethod
