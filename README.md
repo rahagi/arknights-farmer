@@ -41,7 +41,12 @@ You will be prompted to connect to the adb every time you start the emulator.
 
 To stop the containers you can run this command inside the directory.
 ```sh
-$ docker-compose down
+$ docker-compose stop
+```
+
+And to start the containers again you can run
+```sh
+$ docker-compose start
 ```
 
 ## Some Screenshots
