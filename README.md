@@ -24,7 +24,7 @@ $ git checkout with-webui
 
 Run `docker-compose` command inside the directory.
 ```sh
-$ docker-compose up -d --build --remove-orphans
+$ docker-compose up -d --build --remove-orphans # this will take some times
 ```
 Now the docker containers have started and will autostart every time you boot your machine.
 
@@ -35,7 +35,8 @@ Lastly, add this line into your [hosts file](https://en.wikipedia.org/wiki/Hosts
 ```
 
 Now you can go to http://arknights.farmer to see the web interface (Depending on your adblocker, you 
-may have to turn it off for this to work properly).
+may have to turn it off for this to work properly). The web interface itself is very simple, it will
+guide you how to use it.
 
 You will be prompted to connect to the adb every time you start the emulator.
 
