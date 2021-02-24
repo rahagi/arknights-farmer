@@ -56,6 +56,8 @@ $ docker-compose start
 
 ![Create Task Page](screenshots/create_task.png)
 
+![Task Manager Page](screenshots/manager.png)
+
 ## License
 Licensed under the MIT License. See `LICENSE` for more information.
 
