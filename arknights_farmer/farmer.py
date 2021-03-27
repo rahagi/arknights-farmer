@@ -37,7 +37,8 @@ class CombatHandler:
             if self.refill <= 0:
                 self.terminate()
             Logger.log('Refilling sanity...')
-            Elp.tap(self.BUTTONS['refill'], delay=2.6)
+            Elp.tap(self.BUTTONS['refill'])
+            Elp.wait_until_find('home')
             Elp.tap(self.BUTTONS['start1'])
             self.refill -= 1
         Elp.wait_until_find('mission_start')
